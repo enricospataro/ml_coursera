@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[9]:
+# In[1]:
 
 import numpy as np
 import pandas as pd
@@ -23,28 +23,29 @@ X = np.matrix(X.values)
 y = np.matrix(y.values)
 
 
-# In[10]:
+# In[34]:
 
-plt.xlabel('Profit in $10,000s')
-plt.ylabel('Population of City in 10,000s')
-plt.plot(X[:,1], y, 'rx')
+fig, ax = plt.subplots(figsize=(12,8))
+
+ax.set_xlabel('Profit in $10,000s')
+ax.set_ylabel('Population of City in 10,000s')
+ax.plot(X[:,1], y, 'rx')
 
 plt.show()
 
 
-# In[11]:
+# In[15]:
 
 def computeCost(X, theta, y):
-    hypothesis = X*theta.T
+    hypothesis = X * theta.T
     cost = np.power((hypothesis - y), 2).sum() / (2 * length)
     return cost
 
 
-# In[12]:
+# In[16]:
 
 def gradientDescent(X, y, theta, alpha, iterations):
     cost = np.zeros(iterations)
-                           
     for i in range(iterations):
         hypothesis = X * theta.T
         theta = theta - alpha / length * ((hypothesis - y).T * X) 
@@ -53,31 +54,32 @@ def gradientDescent(X, y, theta, alpha, iterations):
     return theta, cost
 
 
-# In[13]:
+# In[17]:
 
 iterations = 1500
 alpha = 0.01
-theta = np.matrix(np.zeros((1, 2)))
+theta = np.matrix(np.zeros((1, X.shape[1])))
 
 
-# In[14]:
+# In[18]:
 
 # Initial cost
 computeCost(X, theta, y)
 
 
-# In[15]:
+# In[19]:
 
 theta, cost = gradientDescent(X, y, theta, alpha, iterations)
+theta
 
 
-# In[16]:
+# In[20]:
 
 # Final cost
 computeCost(X, theta, y)
 
 
-# In[17]:
+# In[27]:
 
 x = np.linspace(data.Population.min(), data.Population.max(), 2)
 f = theta[0, 0] + (theta[0, 1] * x)
@@ -90,6 +92,17 @@ ax.legend(loc=2)
 ax.set_xlabel('Population')
 ax.set_ylabel('Profit')
 ax.set_title('Predicted Profit vs. Population Size')
+
+plt.show()
+
+
+# In[33]:
+
+fig, ax = plt.subplots(figsize=(12,8))
+ax.plot(np.arange(iterations), cost, 'r')
+ax.set_xlabel('Iterations')
+ax.set_ylabel('Cost')
+ax.set_title('Error vs. Training Epoch')
 
 plt.show()
 

@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[8]:
 
 import numpy as np
 import pandas as pd
@@ -9,15 +9,16 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 
-# In[15]:
+# In[9]:
 
 path_2 = 'ex1data2.txt'
 data_2 = pd.read_csv(path_2, header=None, names=['House Size', 'Bedrooms', 'Price'])
 length = len(data_2.index)
 
 
-# In[16]:
+# In[10]:
 
+# Define function to compute feature normalization
 def featureNormalize(X): 
     length = len(X.columns)
     for i in range(length):
@@ -26,7 +27,7 @@ def featureNormalize(X):
     return ((X - mean) / std, mean, std)
 
 
-# In[17]:
+# In[11]:
 
 (data_2, mean, std) = featureNormalize(data_2)
 
@@ -45,21 +46,15 @@ alpha = 0.01
 theta = np.matrix(np.zeros((1, X.shape[1])))
 
 
-# In[18]:
-
-# Initial cost
-computeCost(X, theta, y)
-
-
-# In[11]:
+# In[16]:
 
 def computeCost(X, theta, y):
-    hypothesis = X*theta.T
+    hypothesis = X * theta.T
     cost = np.power((hypothesis - y), 2).sum() / (2 * length)
     return cost
 
 
-# In[12]:
+# In[17]:
 
 def gradientDescent(X, y, theta, alpha, iterations):
     cost = np.zeros(iterations)
@@ -72,8 +67,15 @@ def gradientDescent(X, y, theta, alpha, iterations):
     return theta, cost
 
 
-# In[23]:
+# In[18]:
 
+# Initial cost
+computeCost(X, theta, y)
+
+
+# In[19]:
+
+# Resulting parameters 
 theta, cost = gradientDescent(X, y, theta, alpha, iterations)
 theta
 
@@ -82,4 +84,15 @@ theta
 
 # Final cost
 computeCost(X, theta, y)
+
+
+# In[21]:
+
+fig, ax = plt.subplots(figsize=(12,8))
+ax.plot(np.arange(iterations), cost, 'r')
+ax.set_xlabel('Iterations')
+ax.set_ylabel('Cost')
+ax.set_title('Error vs. Training Epoch')
+
+plt.show()
 
